@@ -41,6 +41,18 @@ def dijkstra_min_distance(g: [[(int, int)]], start: int, destination: int):
 
     return distances[destination]
 
+def bellman_ford(g: [[(int, int)]], start: int, destination: int):
+    distances = [float('inf')] * len(g)
+    distances[start] = 0
+    for i in range(len(g) -1):
+        for v in range(len(g)):
+            edges = g[v]
+            for edge in edges:
+                if distances[edge[0]] > distances[v] + edge[1]:
+                    distances[edge[0]] = distances[v] + edge[1]
+
+    print(distances)
+    return distances[destination]
 
 test_cases = [
     {"inputs": [graph1, 0, 6], "expected": 19},
@@ -50,5 +62,10 @@ test_cases = [
 
 for test_case in test_cases:
     result = (dijkstra_min_distance(*test_case["inputs"]))
-    assert result == test_case["expected"], f"{test_case}: result {result}"
+    assert result == test_case["expected"], f"Dijkstra {test_case}: result {result}"
+    print(f"✅ Test OK: {test_case}")
+
+for test_case in test_cases:
+    result = (bellman_ford(*test_case["inputs"]))
+    assert result == test_case["expected"], f"Bellman Ford {test_case}: result {result}"
     print(f"✅ Test OK: {test_case}")
